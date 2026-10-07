@@ -14,9 +14,11 @@ struct Node* createNode(int value) {
         printf("Memory allocation failed!\n");
         return NULL;
     }
+
     newNode->data = value;
     newNode->left = NULL;
     newNode->right = NULL;
+
     return newNode;
 }
 
@@ -31,7 +33,21 @@ struct Node* insert(struct Node* root, int value) {
     else if (value > root->data) {
         root->right = insert(root->right, value);
     }
+
     return root;
+}
+
+struct Node* search(struct Node* root, int value) {
+    if (root == NULL || root->data == value) {
+        return root;
+    }
+
+    if (value < root->data) {
+        return search(root->left, value);
+    }
+    else {
+        return search(root->right, value);
+    }
 }
 
 void inorderTraversal(struct Node* root) {
@@ -55,19 +71,20 @@ void postorderTraversal(struct Node* root) {
     postorderTraversal(root->left);
     postorderTraversal(root->right);
     printf("%d ", root->data);
-}
+    }
 }
 
 int main() {
     struct Node* root = NULL;
+    int value;
 
- root = insert(root, 60);
- root = insert(root, 25);
- root = insert(root, 30);
- root = insert(root, 10);
- root = insert(root, 70);
- root = insert(root, 60);
- root = insert(root, 80);
+    root = insert(root, 50);
+    root = insert(root, 30);
+    root = insert(root, 20);
+    root = insert(root, 40);
+    root = insert(root, 70);
+    root = insert(root, 60);
+    root = insert(root, 80);
 
     printf("Inorder traversal: ");
     inorderTraversal(root);
@@ -80,6 +97,16 @@ int main() {
     printf("Postorder traversal: ");
     postorderTraversal(root);
     printf("\n");
+
+    printf("\nEnter value to search: ");
+    scanf("%d", &value);
+
+    if (search(root, value) != NULL) {
+        printf("Node %d is present in the BST.\n", value);
+    }
+    else {
+        printf("Node %d is absent in the BST.\n", value);
+    }
 
     return 0;
 }
